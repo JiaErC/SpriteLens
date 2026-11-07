@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>SpriteLens</RootNamespace>
+    <AssemblyName>SpriteLens</AssemblyName>
+    <ApplicationIcon>Assets\SpriteLens.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Version>1.0.0</Version>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Product>精灵镜</Product>
+    <AssemblyTitle>精灵镜 SpriteLens</AssemblyTitle>
+    <Description>为精灵图与瓦片图打造的 Windows 图片查看器</Description>
+    <Authors>SpriteLens</Authors>
+    <Company>SpriteLens</Company>
+    <Copyright>Copyright © 2026</Copyright>
+    <SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\SpriteLens.png" />
+    <Resource Include="samples\*.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

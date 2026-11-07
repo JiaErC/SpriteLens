@@ -66,7 +66,19 @@
 
 ## 运行
 
-### 直接运行发布版
+### 安装版（推荐）
+双击 `dist\installer\SpriteLens-Setup-1.0.0-x64.exe`，按向导安装。
+
+![安装向导](docs/setup.png)
+
+- 自带 .NET 运行时，目标机器不需要额外安装 .NET 9。
+- 安装时可选择“为所有用户安装”（需要管理员）或“仅为我安装”；可创建桌面快捷方式；可选把精灵镜加入图片的“打开方式”列表（不会修改默认程序）。
+- 支持中文/英文安装向导；卸载在“设置 → 应用”里，或开始菜单的卸载快捷方式。
+- 安装包没有做代码签名，首次运行 Windows SmartScreen 可能提示“Windows 已保护你的电脑”；点“更多信息 → 仍要运行”即可。
+- 卸载会清理 App Paths 和“打开方式”注册项；个人设置保留在 `%LOCALAPPDATA%\SpriteLens`。
+- 安装向导的简体中文翻译来自 Inno Setup 官方翻译（Zhenghan Yang）。
+
+### 免安装版
 1. 安装 [.NET 9 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/9.0)（Windows x64）。
 2. 双击 `dist\SpriteLens.exe`。
 
@@ -100,6 +112,23 @@ dotnet publish SpriteLens.csproj -c Release -r win-x64 --self-contained false -o
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\发布.ps1
 ```
+
+### 重新制作安装包
+
+安装包用 [Inno Setup 6](https://jrsoftware.org/isinfo.php) 生成，要求 Windows 和 Inno Setup 6：
+
+```powershell
+winget install JRSoftware.InnoSetup
+.\installer\build-installer.ps1
+```
+
+脚本会先把应用发布成自包含目录（不需要 .NET 运行时），再生成安装向导图片并调用 `ISCC.exe`：
+
+- 输出：`dist\installer\SpriteLens-Setup-1.0.0-x64.exe`
+- 校验：同目录的 `.sha256` 文件
+- 生成目录：`installer\payload\`、`installer\assets\`（已忽略，不提交）
+
+只重新编译 Inno 脚本（复用已有 payload）可加 `-SkipPublish`。
 
 ## 快捷键
 
@@ -160,6 +189,10 @@ Styles/                     控件样式与矢量图标
 Themes/                     深色/浅色配色
 samples/                    示例精灵图（内嵌为“载入示例”）
 docs/                       README 截图
+installer/SpriteLens.iss    Inno Setup 6 安装脚本
+installer/build-installer.ps1  自包含发布 + 向导图生成 + 编译安装包
+installer/安装说明.txt       安装版快速上手
+installer/Languages/        安装向导简体中文
 ```
 
 ## 设计说明
@@ -176,8 +209,9 @@ docs/                       README 截图
 - GIF 只显示第一帧（本项目不是 GIF 播放器）；如果把它当雪碧图并设置帧尺寸，可以用帧预览/幻灯片逐帧查看。
 - 幻灯片和全屏会置顶覆盖任务栏，按 Esc 退出。
 - 编辑只保存在内存中；关闭前请导出，或使用“导出整张图”/打印。
-- 没有做文件关联安装器；需要时把 exe 发送到桌面快捷方式，或“打开方式”里选择它。
+- 安装包未做代码签名，SmartScreen 可能提示；安装程序只可选加入“打开方式”，不会修改默认图片程序。
 - 没有实现系统“分享”面板、锁屏幻灯片和触摸板双指手势；这些需要额外的 Shell/UWP 集成，当前版本聚焦本地查看、切图和导出。
 - 多显示器下全屏以主显示器为准。
+
 
 
